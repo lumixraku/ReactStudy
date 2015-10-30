@@ -11,7 +11,7 @@
           return {value: 'Hello!'};
         },
         handleChange: function(event) {
-          //react onchange 是有改动就触发的 而平常onchange只有改动了值且失去焦点后才触发
+          //react onChange 是有改动就触发的 而平常onchange只有改动了值且失去焦点后才触发
           this.setState({value: event.target.value});
         },
         render: function () {
