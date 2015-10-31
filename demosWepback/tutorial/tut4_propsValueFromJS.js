@@ -18,7 +18,7 @@ var Comment = React.createClass({
           {this.props.author}
         </h2>
         {/*防止XSS */}
-        {/*这样 危险的HTML标签就在*/}
+        {/*这样 危险的HTML标签就在span里面*/}
         <span dangerouslySetInnerHTML={this.rawMarkUp()} />
       </div>
     );

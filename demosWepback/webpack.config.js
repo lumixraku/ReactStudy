@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './tutorial/tut7_form.js',
+  entry: './thinkInReact/dynamicMain.js',
   output: {
     filename: 'bundle.js'
   },

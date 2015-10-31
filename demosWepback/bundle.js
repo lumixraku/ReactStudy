@@ -51,125 +51,185 @@
 	var marked = __webpack_require__(159);
 	var $ = __webpack_require__(160);
 
-	var Comment = React.createClass({
-	  displayName: 'Comment',
+	var SearchBar = React.createClass({
+	  displayName: 'SearchBar',
 
-	  rawMarkUp: function rawMarkUp() {
-	    //this.props.children得到的是Commnet标签子节点(包括文本节点)的内容
-	    //marked 可以转为markdown的HTML
-	    var rawMarkup = marked(this.props.children.toString(), { sanitize: true });
-	    return { __html: rawMarkup };
+	  inputEvent: function inputEvent() {
+	    this.props.onUserInput(this.refs.filterTextInput.value, this.refs.inStockOnlyInput.checked);
 	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'comment' },
+	      { className: 'searchbar' },
 	      React.createElement(
-	        'h2',
-	        { className: 'commentAuthor' },
-	        this.props.author
+	        'div',
+	        null,
+	        React.createElement('input', { placeholder: 'Search...', onChange: this.inputEvent, ref: 'filterTextInput' })
 	      ),
-	      React.createElement('span', { dangerouslySetInnerHTML: this.rawMarkUp() })
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement('input', { type: 'checkbox', onChange: this.inputEvent, ref: 'inStockOnlyInput' })
+	      )
 	    );
 	  }
 	});
 
-	/*传入props*/
-	var CommentList = React.createClass({
-	  displayName: 'CommentList',
+	var ProductRow = React.createClass({
+	  displayName: 'ProductRow',
 
 	  render: function render() {
-	    var cmtNodes = this.props.data.map(function (comment) {
-	      return(
-	        /*每一个循环的元素都需要有一个key属性  key属性的值应该是唯一的*/
+	    return(
+	      /*没有存货的为红色   PS  注释若在html标签之外  不能加上 {}  */
+	      React.createElement(
+	        'tr',
+	        { className: this.props.data.stocked ? '' : 'red' },
 	        React.createElement(
-	          Comment,
-	          { author: comment.author, key: comment.id },
-	          comment.text
+	          'td',
+	          null,
+	          this.props.data.name
+	        ),
+	        React.createElement(
+	          'td',
+	          null,
+	          this.props.data.price
 	        )
-	      );
-	    });
+	      )
+	    );
+	  }
+	});
+
+	var ProductCategoryRow = React.createClass({
+	  displayName: 'ProductCategoryRow',
+
+	  render: function render() {
+	    return React.createElement(
+	      'tr',
+	      null,
+	      React.createElement(
+	        'td',
+	        { colSpan: '2' },
+	        this.props.category
+	      )
+	    );
+	  }
+	});
+
+	var ProductTable = React.createClass({
+	  displayName: 'ProductTable',
+
+	  render: function render() {
+	    // var self = this;//不用这么做  例子是用的bind
+	    var rows = [];
+	    var lastCategory = '';
+	    // 不能简单的返回ProductRow  因为穿插着还有 ProductCategoryRow
+	    // rows = this.props.rows.map(function(item){
+	    //   return (
+	    //     <ProductRow data={item} />
+	    //   );
+	    // });
+	    this.props.rows.forEach((function (item) {
+	      console.log(item);
+	      //表示插入一个ProductRow
+	      if (item.category != lastCategory) {
+	        rows.push(React.createElement(ProductCategoryRow, { category: item.category, key: item.category }));
+	      }
+	      lastCategory = item.category;
+
+	      //插入一个数据
+	      if (item.name.indexOf(this.props.filterText) != -1) {
+	        if (this.props.inStockOnly) {
+	          if (item.stocked) {
+	            rows.push(React.createElement(ProductRow, { data: item, key: item.name }));
+	          }
+	        } else {
+	          rows.push(React.createElement(ProductRow, { data: item, key: item.name }));
+	        }
+	      }
+	    }).bind(this));
+
 	    return React.createElement(
 	      'div',
-	      { className: 'commentList' },
-	      cmtNodes
+	      { className: 'product-table' },
+	      React.createElement(
+	        'table',
+	        null,
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'td',
+	              null,
+	              'Name'
+	            ),
+	            React.createElement(
+	              'td',
+	              null,
+	              'Price'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          rows
+	        )
+	      )
 	    );
 	  }
 	});
 
-	var CommentForm = React.createClass({
-	  displayName: 'CommentForm',
-
-	  clickEvent: function clickEvent(e) {
-	    e.preventDefault();
-	    var author = this.refs.author.value.trim();
-	    var text = this.refs.text.value.trim();
-	    if (!text || !author) {
-	      return;
-	    }
-	    // TODO: send request to the server
-	    this.props.onCommentSubmit({ author: author, text: text });
-	    this.refs.author.value = '';
-	    this.refs.text.value = '';
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'form',
-	      { className: 'commentForm', onSubmit: this.clickEvent },
-	      React.createElement('input', { type: 'text', placeholder: 'Your name', ref: 'author' }),
-	      React.createElement('input', { type: 'text', placeholder: 'Say something...', ref: 'text' }),
-	      React.createElement('input', { type: 'submit', value: 'Post' })
-	    );
-	  }
-	});
-	var CommentBox = React.createClass({
-	  displayName: 'CommentBox',
+	var FilterableProductTable = React.createClass({
+	  displayName: 'FilterableProductTable',
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      data: []
+	      filterText: '',
+	      inStockOnly: false
 	    };
 	  },
-	  getDataMe: function getDataMe() {
-	    $.ajax({
-	      url: this.props.url,
-	      dataType: 'json',
-	      cache: false,
-	      success: (function (data) {
-	        this.setState({ data: data });
-	      }).bind(this), //this.setState是 React中的函数   所以要绑定this  否则this就是window了
-	      error: (function (xhr, status, err) {
-	        console.error(this.props.url, status, err.toString());
-	      }).bind(this)
+	  componentDidMount: function componentDidMount() {},
+	  inputEvent: function inputEvent(evt) {
+	    this.state.filterText = evt.target.value;
+	  },
+	  checkEvent: function checkEvent(evt) {
+	    this.state.inStockOnly = evt.target.checked;
+	  },
+	  userInputEvent: function userInputEvent(filterText, checked) {
+	    console.log(filterText, checked);
+	    this.setState({
+	      filterText: filterText,
+	      inStockOnly: checked
 	    });
-	  },
-	  handleCommentSubmit: function handleCommentSubmit(data) {
-	    console.log(data);
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.getDataMe();
-	    setInterval(this.getDataMe, this.props.timeout);
+	    //不能这样  只有整个state 设置新值才能再次调用组件的render
+	    // this.state.filterText = filterText;
+	    // this.state.inStockOnly = checked;
 	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'commentBox' },
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Comments'
-	      ),
-	      React.createElement(CommentList, { data: this.state.data }),
-	      React.createElement(CommentForm, { onCommentSubmit: this.handleCommentSubmit })
+	      { className: 'table-wrapper' },
+	      React.createElement(SearchBar, {
+	        filterText: this.state.filterText,
+	        inStockOnly: this.state.inStockOnly,
+	        onUserInput: this.userInputEvent
+	      }),
+	      React.createElement(ProductTable, {
+	        rows: this.props.data,
+	        filterText: this.state.filterText,
+	        inStockOnly: this.state.inStockOnly
+	      })
 	    );
 	  }
 	});
 
-	ReactDOM.render(
-	/*这里的data属性的值就是上面定义的data数组*/
-	/*传递数值类型 需要用{}包裹  当然你也可以timeout="1000"   */
-	React.createElement(CommentBox, { url: '/api/comments', timeout: '2000' }), document.getElementById('content'));
-	/*防止XSS */ /*这样 危险的HTML标签就在*/ /*在所有的JSX标签中插入js东东都需要用{}包裹*/ /*cmtNodes 是一个数组  因此可以这样使用*/ /*  通过ref引用元素和子组件  */ /* We use the ref attribute to assign a name to a child component and this.refs to reference the DOM node. */ /*  向子组件传入一个函数  */
+	var data = [{ category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football" }, { category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball" }, { category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball" }, { category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch" }, { category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5" }, { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" }];
+
+	ReactDOM.render(React.createElement(FilterableProductTable, { data: data }), document.getElementById('content'));
+	/*这样不好  传两个事件处理函数  太麻烦了*/ /*<SearchBar filterText = {this.state.filterText}  inStockOnly={this.state.inStockOnly}  onInputEvent = {this.inputEvent} onCheckEvent={this.checkEvent}/> */
 
 /***/ },
 /* 1 */

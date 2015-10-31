@@ -19,7 +19,7 @@ var Comment = React.createClass({
           {this.props.author}
         </h2>
         {/*防止XSS */}
-        {/*这样 危险的HTML标签就在*/}
+        {/*这样 危险的HTML标签就在span里面*/}
         <span dangerouslySetInnerHTML={this.rawMarkUp()} />
       </div>
     );
@@ -57,6 +57,7 @@ var CommentForm = React.createClass({
         return;
       }
       // TODO: send request to the server
+      // onCommentSubmit这个属性值是一个函数
       this.props.onCommentSubmit({author: author, text: text});
       this.refs.author.value = '';
       this.refs.text.value = '';
@@ -79,7 +80,7 @@ var CommentBox = React.createClass({
       data:[]
     }
   },
-  getDataMe: function(){
+  getData: function(){
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -94,18 +95,29 @@ var CommentBox = React.createClass({
   },
   /*该函数由CommetnForm这个子组件调用的*/
   handleCommentSubmit: function(data){
-    console.log(data);
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: data,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   componentDidMount: function(){
-    this.getDataMe();
-    setInterval(this.getDataMe, this.props.timeout);
+    this.getData();
+    setInterval(this.getData, this.props.timeout);
   },
   render: function() {
     return (
       <div className="commentBox">
         <h1>Comments</h1>
         <CommentList data={this.state.data}/>
-        {/*  向子组件传入一个函数  */ }
+        {/*  向子组件传入一个函数  子组件CommentForm会调用这个函数*/ }
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
@@ -114,7 +126,7 @@ var CommentBox = React.createClass({
 
 ReactDOM.render(
   /*这里的data属性的值就是上面定义的data数组*/
-  /*传递数值类型 需要用{}包裹  当然你也可以timeout="1000"   */
+  /*传递数值类型 需要用{}包裹 比如timeout={2000}  当然你也可以timeout="1000"   */
   <CommentBox url="/api/comments" timeout="2000" />,
   document.getElementById('content')
 );
