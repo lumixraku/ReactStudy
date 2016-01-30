@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/browser.min.js"></script>
+  <script src="../build/jquery.min.js"></script>
+</head>
+<body>
+Components have three main parts of their lifecycle:
+Mounting(being inserted into the DOM),
+Updating(being re-rendered)
+Unmounting(being removed from the DOM).
+
+React provides hooks into these lifecycle part. will methods are called right before something happens, and did methods which are called right after something happens.
+componentWillMount()
+componentDidMount()
+componentWillUpdate(object nextProps, object nextState)
+componentDidUpdate(object prevProps, object prevState)
+componentWillUnmount()
+componentWillReceiveProps(object nextProps): invoked when a mounted component receives new props.
+shouldComponentUpdate(object nextProps, object nextState): invoked when a component decides whether any changes warrant an update to the DOM.
+
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+var MyOpacity = React.createClass({
+  getDefaultProps: function(){
+    return {
+      intervalTime: 100
+    }
+  },
+  getInitialState: function(){
+    return {
+      opacityVal:1
+    }
+  },
+  componentDidMount: function(){
+    this.opacityInterval();
+  },
+  render:function(){
+    return (
+      //向属性中写入一个值  下面的做法是错误的
+      //<p style="opacity:{this.opacityVal}">Wahaha</p>
+      //应该这样
+      <div style={{opacity:this.state.opacityVal}} data-interval={this.props.intervalTime}>
+        Wahaha {this.props.intervalTime}
+      </div>
+      //PS React中 render返回的HTML tag中的属性名字是不能随便取的  必须是HTML中有的那几个属性
+      //自定义属性使用 data-xxx 的形式
+    )
+  },
+  opacityInterval: function(){
+    setInterval(function(){
+      if(this.state.opacityVal < 0.1){
+        this.setState({
+          opacityVal:1
+        })
+      }else{
+        this.setState({
+          opacityVal:this.state.opacityVal-0.1
+        })
+      }
+    }.bind(this),this.props.intervalTime);
+    //千万不要忘记了bind  因为this.state.xxx 是在interval的回调函数中  此时的this不再是一个React对象
+  }
+});
+React.render(
+  <MyOpacity intervalTime="150" />,
+  document.querySelector('#example1')
+)
+
+//   isMounted()============================================
+var GistName = React.createClass({
+  getInitialState: function(){
+    return {
+      lists:[]
+    }
+  },
+  componentDidMount:function(){
+    console.log(this.isMounted());
+    if(this.isMounted()){
+      //$.get得到的数据本身就是对象  而不是文本
+      $.get(this.props.url).then(function(data){
+        this.setState({
+          lists:data
+        })
+      }.bind(this));
+    }
+  },
+  handleClick:function(event){
+    console.log(event.target.innerHTML);
+  },
+  render: function(){
+    // var ols = this.state.lists.map(function(item){
+    //   return (
+    //     <ol onClick={this.handleClick}>{item.owner.login} -- {item.html_url} </ol>
+    //   )
+    // }.bind(this));
+    // return (
+    //   <ul>
+    //     {ols}
+    //   </ul>
+    // )
+    //或者这么做============================
+    return (
+      <ul>
+      {
+        //需要注意的是 this 以及整个map都应该用 {} 包裹
+        //因为jsx只允许在 {} 中使用js语句
+        this.state.lists.map(function(item){
+          return (
+            <ol onClick={this.handleClick}>{item.owner.login} -- {item.html_url} </ol>
+          )
+        }.bind(this))
+      }
+      </ul>
+    )
+  }
+})
+
+React.render(
+  <GistName url="https://api.github.com/users/octocat/gists"/>,
+  document.querySelector('#example2')
+)
+
+</script>
+</body>
+</html>

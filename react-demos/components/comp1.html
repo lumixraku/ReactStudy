@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/browser.min.js"></script>
+</head>
+<body>
+  <div id="example1"></div>
+  <div id="example2"></div>
+  <div id="example3"></div>
+  <div id="example4"></div>
+  <div id="example5"></div>
+  <script type="text/babel">
+    //组件1=====================
+    //定义组件需要大写
+    var HelloMessage = React.createClass({
+      render:function() {
+        return <h1>Hello {this.props.name}</h1>
+      }
+    });
+    //实参是从React.render()传入的
+    //这里的第一个参数是一个自定义标签
+    React.render(
+      <HelloMessage name="John" />,
+      document.getElementById('example1')
+    );
+    //组件2======================================
+      var NotesList = React.createClass({
+        render: function() {
+          return (
+            <ol>
+              {
+                this.props.children.map(function (child) {
+                  return <li>{child}</li>
+                })
+              }
+            </ol>
+          );
+        }
+      });
+      //子元素也是prop  放在children中
+      React.render(
+        <NotesList>
+          <span>hello</span>
+          <span>world</span>
+        </NotesList>,
+        document.querySelector('#example2')//document.body
+      );
+      //组件3  props使用js中的变量=======================
+      var data = '123';
+      var MyTitle = React.createClass({
+        propTypes: {
+          title: React.PropTypes.string.isRequired,
+        },
+        render: function() {
+          return <h1> {this.props.title} </h1>;
+        }
+      });
+      React.render(
+        <MyTitle title={data} />,
+        document.getElementById('example3') //document.body
+      );
+      //组件4 ref引用==================================
+      var MyComponent = React.createClass({
+        handleClick: function() {
+          //在HTML中是 ref  但是这里是refs  表示保存所有的ref对象
+          React.findDOMNode(this.refs.myTextInput).focus();
+        },
+        render: function() {
+          return (
+            <div>
+              <input type="text" ref="myTextInput" />
+              <input type="button" value="Focus the text input" onClick={this.handleClick} />
+            </div>
+          );
+        }
+      });
+      React.render(
+        <MyComponent />,
+        document.getElementById('example4')
+      );
+      //组件5  state===================================
+      var LikeButton = React.createClass({
+        getInitialState: function(){
+          return {
+            liked:false
+          }
+        },
+        handleClick: function(){
+          this.setState({
+            liked: !this.state.liked
+          })
+        },
+        render:function(){
+          var showText = this.state.liked ? 'liked' : 'do not like'
+          return (
+            <p onClick={this.handleClick}>
+              You {showText} this!
+            </p>
+          )
+        }
+      })
+      React.render(
+        <LikeButton></LikeButton>,
+        document.getElementById('example5')
+      )
+      //下面的方式也OK
+      // React.render(
+      //   <LikeButton/>,
+      //   document.getElementById('example5')
+      // )
+      </script>
+</body>
+</html>

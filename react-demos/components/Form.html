@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/browser.min.js"></script>
+</head>
+<body>
+  <div id="example1"></div>
+  <div id="example2"></div>
+  <div id="example3"></div>
+  <div id="example4"></div>
+  <div id="example5"></div>
+  <script type="text/babel">
+  var Input = React.createClass({
+    getInitialState:function(){
+      return {
+        text:'Wahaha'
+      }
+    },
+    handleChange: function(event){
+      //这样的方式不好  没有利用到事件的特性  而且代码太局限了
+      // console.log(this.refs.textInput.getDOMNode().value);
+      // this.setState({
+      //   text: this.refs.textInput.getDOMNode().value
+      // })
+
+      this.setState({
+        text:event.target.value
+      })
+    },
+    render:function(){
+      return (
+      <div>
+        <input ref="textInput" onChange={this.handleChange}/>
+        <p>{this.state.text}</p>
+      </div>
+      )
+    }
+  });
+  React.render(
+    <Input />,
+    document.getElementById('example1')
+  )
+  </script>
+</body>
+</html>
