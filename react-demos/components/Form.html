@@ -43,6 +43,160 @@
     <Input />,
     document.getElementById('example1')
   )
+  //============================
+
+  var MyForm = React.createClass({
+    getInitialState:function(){
+      return {
+        sel1Opt:['B'],
+        sel2Opt:['A','B'],
+        sel3Opt:[1],
+        //复选框 ==================
+        checkBox1:['orange','apple'],
+        cb1options: [
+          { value: 'zuma', text: 'zuma' },
+          { value: 'orange', text: 'Orange' },
+          { value: 'apple', text: 'Apple' },
+          { value: 'grape', text: 'Grape' }
+        ],
+        //单选框 =========================
+        radioBox1:'orange',
+        radioOptions:[
+          {value:'zuma',text:'zuma'},
+          { value: 'orange', text: 'Orange' },
+          { value: 'apple', text: 'Apple' },
+          { value: 'grape', text: 'Grape' }
+        ]
+      }
+    },
+    submitHandler:function(event){
+      event.preventDefault();
+      console.log(this.state.sel1Opt);
+    },
+    handleSelectChange:function(event){
+      var select = event.target;
+      // var select = this.refs.sel1Select.getDOMNode();
+      var choosed = [];
+      for (var i = select.length - 1; i >= 0; i--) {
+        var opt = select.options[i];
+        opt.selected && choosed.push(opt.value);
+      };
+      this.setState({
+        [select.name+'Opt']:choosed
+      })
+      this.setState({
+        sel1Opt: choosed
+      })
+      //不能立即去读取this.state.xxx 的值  因为setState是异步的
+      //所以这里读取到sel1Opt的值是上次选择的值  而不是这次选择的值
+      // console.log(select.name,'---',choosed,'---',this.state.sel1Opt);
+    },
+    handleCheckBoxChange:function(e){
+      //用到input标签的两个属性 value  checked
+      var target = e.target;
+      var checkboxName = target.name;
+      var selected = [];
+      //var checkboxs = document.querySelectorAll('input[name='+checkboxName+']');
+      if(target.checked){
+        selected = [].concat(this.state.checkBox1).concat(target.value);
+        this.setState({
+          checkBox1:selected
+        })
+      }else{
+        selected = [].concat(this.state.checkBox1);
+        selected.splice(selected.indexOf(target.value),1);
+        this.setState({
+          checkBox1:selected
+        })
+      }
+    },
+    handleRadioBoxChange:function(e){
+      var target = e.target;
+      this.setState({
+        radioBox1: target.value
+      })
+    },
+    //setState执行完毕之后会调用本方法
+    componentDidUpdate: function(){
+      console.log('sel2Opt',this.state.sel2Opt);
+      // console.log('update  checkbox',this.state.checkBox1);
+      // console.log('udpate radio', this.state.radioBox1);
+    },
+    render:function(){
+      return (
+        <form onSubmit={this.submitHandler}>
+          <p>
+            <select value={this.state.sel1Opt} name="sel1" onChange={this.handleSelectChange}  ref="sel1Select">
+              <option value="A">Sel1A</option>
+              <option value="B">Sel1B</option>
+              <option value="C">Sel1C</option>
+              <option value="D">Sel1D</option>
+              <option value="E">Sel1E</option>
+              <option value="F">Sel1F</option>
+            </select>
+          </p>
+          <p>
+          <select multiple="true" value={this.state.sel2Opt} name="sel2" onChange ={this.handleSelectChange}>
+              {
+                ['A','B','C','D','E','F'].map(function(item){
+                  return(
+                    <option value={item}>{'Sel2'+item}</option>
+                  )
+                })
+              }
+          </select>
+          </p>
+          <p>
+          <select value={this.state.sel1Opt} name="sel3">
+              <option value="A">3A</option>
+              <option value="B">3B</option>
+              <option value="C">3C</option>
+              <option value="D">3D</option>
+              <option value="E">3E</option>
+              <option value="F">3F</option>
+          </select>
+          </p>
+          <p>
+          {
+            //checkbox========================
+            this.state.cb1options.map(function(item){
+              return (
+                <input type="checkbox" name="cb1"
+                value={item.value} ref={'cb1'+item.value}
+                onChange= {this.handleCheckBoxChange}
+                checked={this.state.checkBox1.indexOf(item.value) != -1}
+                >
+                {item.text}
+                </input>
+              )
+            }.bind(this))
+          }
+          </p>
+          <p>
+          {
+            //Radio Box
+            this.state.cb1options.map(function(item){
+              return (
+                <input type="radio" name="rd1"
+                value={item.value} ref={'rd1'+item.value}
+                onChange= {this.handleRadioBoxChange}
+                checked={this.state.radioBox1.indexOf(item.value) != -1}
+                >
+                {item.text}
+                </input>
+              )
+            }.bind(this))
+          }
+          </p>
+          <button type="submit">Submit</button>
+        </form>
+      );
+    }
+  })
+  React.render(
+    <MyForm />,
+    document.querySelector('#example2')
+  )
   </script>
 </body>
 </html>

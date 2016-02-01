@@ -31,9 +31,10 @@ var FilterInput = React.createClass({
     return (
       <div>
         <div>
-          {//这里并不使用checked
+          {
+            //默认选择项  checked  defaultChecked 都可以
           }
-          <input type="radio" value="All" name="gender" defaultChecked onChange={this.genderChanged}/>All
+          <input type="radio" value="All" name="gender" checked onChange={this.genderChanged}/>All
           <input type="radio" value="男" name="gender" onChange={this.genderChanged} />男
           <input type="radio" value="女" name="gender" onChange={this.genderChanged} />女
         </div>
