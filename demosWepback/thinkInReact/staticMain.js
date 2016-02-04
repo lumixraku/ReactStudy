@@ -1,6 +1,5 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var marked = require('marked');
 var $ = require('jQuery');
 
 var SearchBar = React.createClass({
@@ -21,7 +20,7 @@ var SearchBar = React.createClass({
 var ProductRow = React.createClass({
   render: function(){
     return (
-        /*没有存货的为红色   PS  注释若在html标签之外  不能加上 {}  */
+        //没有存货的为红色   PS  注释若在html标签之外  不能加上 {}
         <tr className={this.props.data.stocked ? '' : 'red'} >
           <td>{this.props.data.name}</td>
           <td>{this.props.data.price}</td>

@@ -1,6 +1,5 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var marked = require('marked');
 var $ = require('jQuery');
 
 var SearchBar = React.createClass({

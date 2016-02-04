@@ -1,0 +1,6 @@
+{
+  "dependencies":{
+    "react-dom": "^0.14.1",
+    "jquery": "^2.1.4"
+  }
+}
