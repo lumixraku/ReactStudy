@@ -31,6 +31,8 @@ Inner1 = React.createClass({
   },
   handleSubmit: function(e){
     var target = e.target;
+
+    //prenode是寻找submit按钮之前的一个元素  也就是文本输入框
     var prenode= (function(){
       var node = target.previousSibling;
       while(node.nodeType!=1){
@@ -39,6 +41,7 @@ Inner1 = React.createClass({
       };
       return node;
     })();
+    //调用父组件的函数  并将值以参数的形式传给父组件
     this.props.setVal2Fn(prenode.value);  //将值传给父组件
   },
   render:function(){
@@ -79,6 +82,9 @@ Container2 = React.createClass({
     })
   },
   render: function(){
+    //本例子是Inner2 和 Inner3 之间的消息传递
+    //Inner2 的消息传给 Inner3  实际上就是传给父组件
+    //然后Inner3 使用的是父组件读取这个父组件的变量
     return <div>
       <Inner2  val2={this.state.val2}  val3={this.state.val3}
       changeVal3Fn={this.changeVal3}/>
@@ -176,3 +182,52 @@ React.render(
 <Container3 />,
 example3
 )
+
+//使用PubSub 订阅发布模式来处理消息传递
+//在一个组件ComponentDidMount函数触发后就绑定
+var Container4, Container5;
+var messagePubSub = new PubSub();
+var MSGCHANGED = 'msg_changed';
+Container4 = React.createClass({
+  getInitialState: function(){
+    return {
+      text: 'default'
+    }
+  },
+  componentDidMount: function(){
+    messagePubSub.addEvent(MSGCHANGED, this.msgHandler);
+  },
+  msgHandler: function(value){
+    console.log('test', value);
+    this.setState({
+      text:value
+    })
+  },
+  render: function(){
+    return (
+      <div>
+        -- {this.state.text} --
+      </div>
+    )
+  }
+});
+Container5 = React.createClass({
+  changeHandler: function(e){
+    messagePubSub.fireEvent(MSGCHANGED, null, e.target.value);
+  },
+  render: function(){
+    return (
+      <div>
+        <input class="container5-input" onChange={this.changeHandler}/>
+      </div>
+    )
+  }
+});
+React.render(
+  <div>
+    <Container4 />
+    <Container5 />
+  </div>,
+  example4
+)
+
