@@ -17,6 +17,14 @@ const App = React.createClass({
     )
   }
 })
+const Home = React.createClass({
+  render(){
+    return(
+      <div>Home</div>
+    )
+  }
+})
+
 const About = React.createClass({
   render(){
     return(

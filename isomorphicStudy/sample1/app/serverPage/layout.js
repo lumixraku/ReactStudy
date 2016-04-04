@@ -11,7 +11,7 @@ class Default extends Component {
   };
 
   renderScripts() {
-    const {scriptUrls} = this.props;
+    const {scriptUrls, isServer} = this.props;
     let items = [];
     scriptUrls.map((url, i)=>{
       items.push(<script key={i} src={url} />);
@@ -22,8 +22,6 @@ class Default extends Component {
   render() {
     // 对象的解构赋值
     const { microdata, title, children } = this.props;
-    // let vendorsJs = `${microdata.domain}/build/${microdata.version}/js/vendors.js`;
-    // <script src={vendorsJs} />
     return (
       <html>
         <head>

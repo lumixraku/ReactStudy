@@ -65,6 +65,8 @@ module.exports = function(app) {
 
     // merge koa state
     let props = Object.assign({}, this.state, _locals); //相当于$.extend()
+    log(['debug:props'],props);
+
     let markup = options.doctype || '<!DOCTYPE html>';
 
     try {
@@ -73,6 +75,18 @@ module.exports = function(app) {
       component = component.default || component;
 
       //React.createElement 根据配置生成元素
+      // React.createElement("div",
+      //   {
+      //     id: "greeting-container",
+      //     className: "container"
+      //   },
+      //   React.createElement(Greeting, {name: "World"})
+      // )
+      // 得到
+      // <div id="greeting-container" className="container">
+      //   <Greeting name="World"/>
+      // </div>
+
       markup += render(React.createElement(component, props, children));
     } catch (err) {
       err.code = 'REACT';

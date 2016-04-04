@@ -8,9 +8,11 @@
  *   谋士 <qingliang.hql@alibaba-inc.com>
  */
 'use strict';
-require('babel-register');
-const Home = require('./app/comps/Home.js');
-console.log('home',Home.microdata);
+// require('babel-register');
+// const Home = require('./app/comps/Home.js');
+// console.log('home',Home.microdata);
+
+
 const koa = require('koa');
 const koaRouter = require('koa-router');
 const path = require('path');
@@ -65,7 +67,7 @@ const App = ()=> {
       microdata: microdata,
       mydata: {
         path: this.path,
-        deviceID: deviceID,
+        deviceID: deviceID
       }
     });
   });
@@ -74,7 +76,7 @@ const App = ()=> {
 
 
   // 注入reactview
-  const viewpath = path.join(__dirname, 'app/comps');
+  const viewpath = path.join(__dirname, 'app/serverPage');
   app.config = {
     reactview: {
       viewpath: viewpath,                 // the root directory of view files

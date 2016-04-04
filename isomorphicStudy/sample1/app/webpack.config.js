@@ -1,33 +1,29 @@
 const path = require('path');
 const webpack = require('webpack');
-const VERSION = require('./package.json').version;
 
 const getModulePath = function(name) {
   return path.join(__dirname, 'node_modules', name);
 };
 module.exports = [{
   entry: {
-    'home': './src/js/home/app.js',
-    'device': './src/js/device/app.js',
+    'device': './comps/main.js'
   },
   output: {
-    path: path.join(__dirname, 'build', VERSION, 'js'),
+    path: path.join(__dirname, 'build', 'js'),
     filename: "[name].js"
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.css'],
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      include: [
-        path.resolve(__dirname, 'src'),
-      ],
-      loaders: ['babel'],
-    }, {
-      test: /\.scss$/,
-      loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+      exclude: /(node_modules|bower_components)/,
+      loader: 'babel', // 'babel-loader' is also a legal name to reference
+      query: {
+        presets: ["es2015", "react", "stage-0"]
+      }
     }]
   },
   plugins: [

@@ -1,106 +1,78 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
+import { render } from 'react-dom';
+import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router'
 
-const ACTIVE = { color: 'red' }
-
-class App extends React.Component {
+const App = React.createClass({
   render() {
     return (
       <div>
-        <h1>APP!</h1>
+        <h1>App!!</h1>
         <ul>
-          <li><Link      to="/"           activeStyle={ACTIVE}>/</Link></li>
-          <li><IndexLink to="/"           activeStyle={ACTIVE}>/ IndexLink</IndexLink></li>
-
-          <li><Link      to="/users"      activeStyle={ACTIVE}>/users</Link></li>
-          <li><IndexLink to="/users"      activeStyle={ACTIVE}>/users IndexLink</IndexLink></li>
-
-          <li><Link      to="/users/ryan" activeStyle={ACTIVE}>/users/ryan</Link></li>
-          <li><Link      to="/users/bubu" activeStyle={ACTIVE}>/users/bubu</Link></li>
-
-
-
-          <li><Link      to={{ pathname: '/users/ryan', query: { foo: 'bar' } }}
-                                          activeStyle={ACTIVE}>/users/ryan?foo=bar</Link></li>
-
-          <li><Link      to="/about"      activeStyle={ACTIVE}>/about</Link></li>
+          {
+            //只有在router中才能使用Link
+          }
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/inbox">Inbox</Link></li>
         </ul>
+        {
+
+        //当url为 /  的时候  props为空
+        //根据路径的不同  Router会返回不同的子component
+        //所以当路径为/ 的时候
+        //Router的处理的组件如同
+        // <App>
+        //   <Dashboard></Dashboard>
+        // </App>
+        //因此 / 时 this.props.children 就是指的Dashboard
+        }
 
         {this.props.children}
       </div>
     )
   }
-}
+})
 
-class Index extends React.Component {
+
+const Dashboard = React.createClass({
+  render() {
+    return <h1>Dashbord !!!!! Welcome to the app! </h1>
+  }
+})
+
+const About = React.createClass({
+  render() {
+    return <h3>About</h3>
+  }
+})
+
+const Inbox = React.createClass({
   render() {
     return (
       <div>
-        <h2>Index!  IndexRoute下加载这个</h2>
+        <h2>Inbox</h2>
+        {this.props.children || "Welcome to your Inbox"}
       </div>
     )
   }
-}
+})
 
-class Users extends React.Component {
+const Message = React.createClass({
   render() {
-    return (
-      <div>
-        <h2>Users</h2>
-        {this.props.children}
-      </div>
-    )
+    return <h3>Message {this.props.params.id}</h3>
   }
-}
-
-class UsersIndex extends React.Component {
-  render() {
-    return (
-      <div>
-        <h3>UsersIndex</h3>
-      </div>
-    )
-  }
-}
-
-class User extends React.Component {
-  render() {
-    return (
-      <div>
-        <h3>User {this.props.params.id}</h3>
-      </div>
-    )
-  }
-}
-
-class About extends React.Component {
-  render() {
-    return (
-      <div>
-        <h2>About</h2>
-      </div>
-    )
-  }
-}
+})
 
 render((
-  <Router history={browserHistory}>
+  <Router history={hashHistory}>
     <Route path="/" component={App}>
-      // 访问/目录的时候  显示的组件
-      <IndexRoute component={Index}/>
-
-      //访问 /about  路径  显示about组件
-      <Route path="/about" component={About}/>
-
-      //在/ 路径下  表示 /users 路径时 调用Users
-      <Route path="users" component={Users}>
-        //当仅仅是访问 /users的时候  显示UsersIndex组件
-        <IndexRoute component={UsersIndex}/>
-        //  当访问/users/xxx   xxx是用户名  显示User组件
-        <Route path=":id" component={User}/>
+      {
+        //根据路径的不同  Router会返回不同的子component
+      }
+      <IndexRoute component={Dashboard} />
+      <Route path="about" component={About} />
+      <Route path="inbox" component={Inbox}>
+        <Route path="messages/:id" component={Message} />
       </Route>
     </Route>
   </Router>
 ), document.body.firstElementChild)
-
