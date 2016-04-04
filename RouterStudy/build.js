@@ -46,7 +46,7 @@
 
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
@@ -56,127 +56,270 @@
 
 	var _reactRouter = __webpack_require__(159);
 
-	var App = _react2['default'].createClass({
-	  displayName: 'App',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'h1',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ACTIVE = { color: 'red' };
+
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
+
+	  function App() {
+	    _classCallCheck(this, App);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+	  }
+
+	  _createClass(App, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
 	        null,
-	        'App!!'
-	      ),
-	      _react2['default'].createElement(
-	        'ul',
-	        null,
-	        _react2['default'].createElement(
-	          'li',
+	        _react2.default.createElement(
+	          'h1',
 	          null,
-	          _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: '/about' },
-	            'About'
+	          'APP!'
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          null,
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/', activeStyle: ACTIVE },
+	              '/'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.IndexLink,
+	              { to: '/', activeStyle: ACTIVE },
+	              '/ IndexLink'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/users', activeStyle: ACTIVE },
+	              '/users'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.IndexLink,
+	              { to: '/users', activeStyle: ACTIVE },
+	              '/users IndexLink'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/users/ryan', activeStyle: ACTIVE },
+	              '/users/ryan'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: { pathname: '/users/ryan', query: { foo: 'bar' } },
+	                activeStyle: ACTIVE },
+	              '/users/ryan?foo=bar'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/about', activeStyle: ACTIVE },
+	              '/about'
+	            )
 	          )
 	        ),
-	        _react2['default'].createElement(
-	          'li',
-	          null,
-	          _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: '/inbox' },
-	            'Inbox'
-	          )
-	        )
-	      ),
-	      this.props.children
-	    );
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(_react2.default.Component);
+
+	var Index = function (_React$Component2) {
+	  _inherits(Index, _React$Component2);
+
+	  function Index() {
+	    _classCallCheck(this, Index);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Index).apply(this, arguments));
 	  }
-	});
 
-	var Dashboard = _react2['default'].createClass({
-	  displayName: 'Dashboard',
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'h1',
-	      null,
-	      'Dashbord !!!!! Welcome to the app! '
-	    );
-	  }
-	});
-
-	var About = _react2['default'].createClass({
-	  displayName: 'About',
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'h3',
-	      null,
-	      'About'
-	    );
-	  }
-	});
-
-	var Inbox = _react2['default'].createClass({
-	  displayName: 'Inbox',
-
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'h2',
+	  _createClass(Index, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
 	        null,
-	        'Inbox'
-	      ),
-	      this.props.children || "Welcome to your Inbox"
-	    );
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Index!  IndexRoute下加载这个'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Index;
+	}(_react2.default.Component);
+
+	var Users = function (_React$Component3) {
+	  _inherits(Users, _React$Component3);
+
+	  function Users() {
+	    _classCallCheck(this, Users);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Users).apply(this, arguments));
 	  }
-	});
 
-	var Message = _react2['default'].createClass({
-	  displayName: 'Message',
+	  _createClass(Users, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Users'
+	        ),
+	        this.props.children
+	      );
+	    }
+	  }]);
 
-	  render: function render() {
-	    return _react2['default'].createElement(
-	      'h3',
-	      null,
-	      'Message ',
-	      this.props.params.id
-	    );
+	  return Users;
+	}(_react2.default.Component);
+
+	var UsersIndex = function (_React$Component4) {
+	  _inherits(UsersIndex, _React$Component4);
+
+	  function UsersIndex() {
+	    _classCallCheck(this, UsersIndex);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(UsersIndex).apply(this, arguments));
 	  }
-	});
 
-	(0, _reactDom.render)(_react2['default'].createElement(
+	  _createClass(UsersIndex, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'UsersIndex'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return UsersIndex;
+	}(_react2.default.Component);
+
+	var User = function (_React$Component5) {
+	  _inherits(User, _React$Component5);
+
+	  function User() {
+	    _classCallCheck(this, User);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(User).apply(this, arguments));
+	  }
+
+	  _createClass(User, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'User ',
+	          this.props.params.id
+	        )
+	      );
+	    }
+	  }]);
+
+	  return User;
+	}(_react2.default.Component);
+
+	var About = function (_React$Component6) {
+	  _inherits(About, _React$Component6);
+
+	  function About() {
+	    _classCallCheck(this, About);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(About).apply(this, arguments));
+	  }
+
+	  _createClass(About, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'About'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return About;
+	}(_react2.default.Component);
+
+	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
-	  _react2['default'].createElement(
+	  { history: _reactRouter.browserHistory },
+	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: App },
-	    _react2['default'].createElement(_reactRouter.IndexRoute, { component: Dashboard }),
-	    _react2['default'].createElement(_reactRouter.Route, { path: 'about', component: About }),
-	    _react2['default'].createElement(
+	    '// 访问/目录的时候  显示的组件',
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: Index }),
+	    '//访问 /about  路径  显示about组件',
+	    _react2.default.createElement(_reactRouter.Route, { path: '/about', component: About }),
+	    '//在/ 路径下  表示 /users 路径时 调用Users',
+	    _react2.default.createElement(
 	      _reactRouter.Route,
-	      { path: 'inbox', component: Inbox },
-	      _react2['default'].createElement(_reactRouter.Route, { path: 'messages/:id', component: Message })
+	      { path: 'users', component: Users },
+	      '//当仅仅是访问 /users的时候  显示UsersIndex组件',
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: UsersIndex }),
+	      '//  当访问/users/xxx   xxx是用户名  显示User组件',
+	      _react2.default.createElement(_reactRouter.Route, { path: ':id', component: User })
 	    )
 	  )
-	), document.body.firstElementChild);
-
-	//只有在router中才能使用Link
-
-	//当url为 /  的时候  props为空
-	//根据路径的不同  Router会返回不同的子component
-	//所以当路径为/ 的时候
-	//Router的处理的组件如同
-	// <App>
-	//   <Dashboard></Dashboard>
-	// </App>
-	//因此 / 时 this.props.children 就是指的Dashboard
-
-	//根据路径的不同  Router会返回不同的子component
+	), document.getElementById('example'));
 
 /***/ },
 /* 1 */

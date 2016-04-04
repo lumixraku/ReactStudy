@@ -19755,7 +19755,7 @@
 
 	      return _react2.default.createElement(
 	        _reactRouter.Router,
-	        { history: isServer ? (0, _reactRouter.createMemoryHistory)(mydata.path || '/') : _reactRouter.browserHistory },
+	        { history: _reactRouter.browserHistory },
 	        _react2.default.createElement(
 	          _reactRouter.Route,
 	          { path: '/', component: _nav2.default },

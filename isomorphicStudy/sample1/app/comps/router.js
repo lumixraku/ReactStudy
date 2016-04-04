@@ -37,7 +37,7 @@ class AppRouter extends Component {
   render() {
     let { isServer, mydata } = this.props;
     return (
-      <Router history={isServer ? createMemoryHistory(mydata.path || '/') : browserHistory}>
+      <Router history={browserHistory}>
         <Route path="/" component={Nav}>
           <IndexRoute component={this.wrapComponent(DeviceView)} />
           {/* //localhost:3000/device/123123     */}
