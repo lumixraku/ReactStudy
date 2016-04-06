@@ -39,7 +39,7 @@ class AppRouter extends Component {
     return (
       <Router history={browserHistory}>
         <Route path="/" component={Nav}>
-          <IndexRoute component={this.wrapComponent(DeviceView)} />
+          {/*<IndexRoute component={this.wrapComponent(DeviceView)} />*/}
           {/* //localhost:3000/device/123123     */}
           <Route path="/device/:deviceID" component={DeviceView}/>
         </Route>

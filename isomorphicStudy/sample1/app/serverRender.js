@@ -7,12 +7,20 @@ const beautifyHTML = require('js-beautify').html;
 // reactDomserver包提供了组件的服端渲染功能
 const ReactDOMServer = require('react-dom/server');
 const React = require('react');
-require('debug').enable('reactview');
-const log = require('debug')('reactview');
 require('babel-register');
 
 
+//debug模块主要用于优化log的显示(分组显示log)
+//这样所有的renderlog就是同一种颜色显示  其他类型的log其他颜色
+require('debug').enable('serverRender');
+require('debug').enable('others');
+//在使用debug前要enable要显示的log分组
+//假如我希望只看某一种log   DEBUG=serverRender node server.js
+const renderLog = require('debug')('serverRender');
+const logOhters = require('debug')('others');
 
+
+logOhters('others log');
 
 
 const defaultOpts = {
@@ -32,10 +40,10 @@ module.exports = function(app) {
 
 
     // http://localhost:3000/device/11 得到的是 Device
-    log(['debug:filename'],filename);
-    log(['debug:_locals'],_locals);
-    log(['debug:internals'],internals);
-    log(['debug:children'],children);
+    renderLog(['debug:filename'],filename);
+    renderLog(['debug:_locals'],_locals);
+    renderLog(['debug:internals'],internals);
+    renderLog(['debug:children'],children);
 
 
 
@@ -45,8 +53,8 @@ module.exports = function(app) {
       filepath += options.extname;
     }
     // http://localhost:3000/device/11 得到的是
-    // /Users/lumixraku/Sites/react-server/react-server-koa-simple/app/views/Device.js
-    log(['debug:filepath'],filepath);
+    // /Users/lumixraku/Sites/ReactStudy/isomorphicStudy/sample1/app/serverPage/Device.js
+    renderLog(['debug:filepath'],filepath);
 
     if (typeof _locals === 'boolean') {
       internals = _locals;
@@ -65,7 +73,7 @@ module.exports = function(app) {
 
     // merge koa state
     let props = Object.assign({}, this.state, _locals); //相当于$.extend()
-    log(['debug:props'],props);
+    renderLog(['debug:props'],props);
 
     let markup = options.doctype || '<!DOCTYPE html>';
 
@@ -97,7 +105,7 @@ module.exports = function(app) {
       // subtly different than prod.
       markup = beautifyHTML(markup);
     }
-    log('[markup:]', markup);
+    renderLog('[markup:]', markup);
     if (options.writeResp) {
       this.type = 'html';
       this.body = markup;

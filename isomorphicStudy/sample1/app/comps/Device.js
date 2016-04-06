@@ -17,15 +17,18 @@ class Device extends Component {
   }
 
   componentWillMount() {
-    let { params } = this.props;//router的参数
-    // console.log(params);
-    this.setState({
-      deviceID: params.deviceID
-    });
+    let { params } = this.props; //router的参数
+    if (params) {
+      console.log('will mount',params);
+      this.setState({
+        deviceID: params.deviceID
+      });
+    }
   }
+
   //router
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps', nextProps);
+    console.log('componentWillReceiveProps', nextProps);
     let id = nextProps.params.deviceID;
     this.setState({
       deviceID: id
@@ -35,7 +38,7 @@ class Device extends Component {
     let { mydata } = this.props;
     return (
       <div className="deviceview">
-        <h1> Device View </h1>
+        <h1> Device!!</h1>
         <h3> device: {this.state.deviceID}</h3>
       </div>
     );

@@ -27,8 +27,9 @@ class LayoutView extends Component {
   render() {
     return (
       <div className="layoutView">
-        <h1>APP device!LayoutView</h1>
+        <h1>Nav</h1>
         <ul>
+          <li><Link to="/" activeStyle={ACTIVE}>/Index</Link></li>
           <li><Link to="/device/all" activeStyle={ACTIVE}>/device/all</Link></li>
           <li><Link to="/device/pc" activeStyle={ACTIVE}>/device/pc</Link></li>
           <li><Link to="/device/wireless" activeStyle={ACTIVE}>/device/wireless</Link></li>
