@@ -4,10 +4,12 @@ var path = require('path');
 module.exports = {
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    './dispatch1',
+    //'./middleware',
+    // './sample0/containers/App.js'
+    './sample1/index.js'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'sample1/dist'),
     filename: 'bundle.js',
   },
   plugins: [
@@ -24,7 +26,7 @@ module.exports = {
     loaders: [
       {
         test: /(\.jsx|\.js)$/,
-        loaders: ['babel?presets[]=es2015&presets[]=react'],
+        loaders: ['babel?presets[]=es2015&presets[]=react&presets[]=stage-0'],
         exclude: /node_modules/,
         include: __dirname
       },

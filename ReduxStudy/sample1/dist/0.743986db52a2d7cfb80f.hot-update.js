@@ -1,0 +1,10 @@
+webpackHotUpdate(0,{
+
+/***/ 101:
+/***/ function(module, exports, __webpack_require__) {
+
+	eval("'use strict';\n\nvar _react = __webpack_require__(12);\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(54);\n\nvar _redux = __webpack_require__(52);\n\nvar _reactRedux = __webpack_require__(55);\n\nvar _App = __webpack_require__(100);\n\nvar _App2 = _interopRequireDefault(_App);\n\nvar _reducers = __webpack_require__(102);\n\nvar _reducers2 = _interopRequireDefault(_reducers);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar store = (0, _redux.createStore)(_reducers2.default);\nconsole.log('---store---', store, store.getState());\nvar rootElement = document.getElementById('example');\n(0, _reactDom.render)(_react2.default.createElement(\n  _reactRedux.Provider,\n  { store: store },\n  _react2.default.createElement(_App2.default, null)\n), rootElement);//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTAxLmpzIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vL3NhbXBsZTEvaW5kZXguanM/ZjRlYSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnXG5pbXBvcnQgeyByZW5kZXIgfSBmcm9tICdyZWFjdC1kb20nXG5pbXBvcnQgeyBjcmVhdGVTdG9yZSB9IGZyb20gJ3JlZHV4J1xuaW1wb3J0IHsgUHJvdmlkZXIgfSBmcm9tICdyZWFjdC1yZWR1eCdcbmltcG9ydCBBcHAgZnJvbSAnLi9jb250YWluZXJzL0FwcCdcbmltcG9ydCB0b2RvQXBwIGZyb20gJy4vcmVkdWNlcnMnXG5cbmxldCBzdG9yZSA9IGNyZWF0ZVN0b3JlKHRvZG9BcHApO1xuY29uc29sZS5sb2coJy0tLXN0b3JlLS0tJywgc3RvcmUsIHN0b3JlLmdldFN0YXRlKCkpO1xubGV0IHJvb3RFbGVtZW50ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2V4YW1wbGUnKVxucmVuZGVyKFxuICA8UHJvdmlkZXIgc3RvcmU9e3N0b3JlfT5cbiAgICA8QXBwIC8+XG4gIDwvUHJvdmlkZXI+LFxuICByb290RWxlbWVudFxuKVxuXG5cbi8qKiBXRUJQQUNLIEZPT1RFUiAqKlxuICoqIHNhbXBsZTEvaW5kZXguanNcbiAqKi8iXSwibWFwcGluZ3MiOiI7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFBQTtBQUNBO0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFDQTtBQUNBO0FBRkEiLCJzb3VyY2VSb290IjoiIn0=");
+
+/***/ }
+
+})

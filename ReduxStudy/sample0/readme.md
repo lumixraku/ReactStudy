@@ -1,0 +1,1 @@
+这是为Redux 所做的热身App  这里并没有用到任何redux  接下来将在sample1中使用redux
